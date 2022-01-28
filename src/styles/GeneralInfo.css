@@ -19,6 +19,7 @@
 }
 
 .GeneralInfo__name-and-career {
+  position: relative;
   display: flex;
   flex-direction: column;
   font-size: 1.2rem;

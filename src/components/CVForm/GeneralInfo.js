@@ -1,19 +1,55 @@
 import "../../styles/GeneralInfo.css";
+import EditButton from "../EditButton";
+import Form from "../Form";
 import React, { Component } from "react";
 
 class GeneralInfo extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      name: "DAVID DUARTE",
+      career: "FRONT END DEVELOPER",
+      nameFormVisibility: false,
+    };
+
+    this.toggleStateProp = this.toggleStateProp.bind(this);
   }
 
+  handleChange = (e) => {
+    e.preventDefault();
+    this.setState({
+      name: e.target.value.toUpperCase(),
+    });
+  };
+
+  toggleStateProp = (e, prop) => {
+    if (this.state.hasOwnProperty(prop)) {
+      if (this.state[prop]) {
+        this.setState({ [prop]: false });
+      } else {
+        this.setState({ [prop]: true });
+      }
+    } else {
+      try {
+        throw new Error("Invalid state property");
+      } catch (e) {
+        console.error(e.name + ": " + e.message);
+      }
+    }
+  };
+
   render() {
+    const { nameFormVisibility } = this.state;
     return (
       <div className="GeneralInfo ">
         <div className="GeneralInfo__name-and-career">
-          <h4 className="GeneralInfo__name">DAVID DUARTE</h4>
-          <h6 className="GeneralInfo__career">FRONT END DEVELOPER</h6>
+          <h4 className="GeneralInfo__name">{this.state.name}</h4>
+          <h6 className="GeneralInfo__career">{this.state.career}</h6>
+          <EditButton buttonHandler={this.toggleStateProp} content="Edit" />
+          {nameFormVisibility && (
+            <Form buttonHandler={this.toggleStateProp("nameFormVisibility")} />
+          )}
         </div>
         <div className="GeneralInfo__image">
           <img

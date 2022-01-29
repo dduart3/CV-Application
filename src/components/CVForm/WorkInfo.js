@@ -14,7 +14,7 @@ class WorkInfo extends Component {
 
   render() {
     return (
-      <div onSubmit={this.onSubmitInfo} className="EducationInfo">
+      <div className="WorkInfo">
         <h3>Work Experience</h3>
       </div>
     );

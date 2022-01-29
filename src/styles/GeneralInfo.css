@@ -1,5 +1,4 @@
-.contact {
-  padding-left: 1.5vw;
+.Contact {
   padding-bottom: 1vh;
   font-size: 0.8rem;
   display: flex;
@@ -8,7 +7,7 @@
 .GeneralInfo {
   background-color: black;
   display: flex;
-  height: 90%;
+  height: 95%;
   width: 35%;
   flex-direction: column;
   margin-left: 2vw;
@@ -29,6 +28,7 @@
 
 .GeneralInfo__career {
   color: rgba(207, 206, 206, 0.788);
+  margin-bottom: 0.8rem;
 }
 
 .GeneralInfo__image {
@@ -46,6 +46,8 @@
 .GeneralInfo__description {
   font-size: 0.7rem;
   line-height: 1rem;
+  height: 18vh;
+  overflow-x: auto;
 }
 
 .GeneralInfo__contact {
@@ -53,6 +55,7 @@
   font-size: 1rem;
   display: flex;
   flex-direction: column;
+  padding-left: 1.5rem;
 }
 .img {
   max-width: 100%;

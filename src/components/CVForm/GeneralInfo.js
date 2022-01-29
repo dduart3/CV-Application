@@ -8,27 +8,78 @@ class GeneralInfo extends Component {
     super(props);
 
     this.state = {
-      name: "DAVID DUARTE",
-      career: "FRONT END DEVELOPER",
-      nameFormVisibility: false,
+      nameForm: {
+        visibility: false,
+        fields: {
+          name: "DAVID DUARTE",
+          career: "FRONT END DEVELOPER",
+        },
+        coords: {
+          x: 0,
+          y: 0,
+        },
+      },
+      contactForm: {
+        visibility: false,
+        fields: {
+          about:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus tristique lobortis. Fusce varius dolor nec lectus blandit, porta vestibulum magna porttitor.Suspendisse ut bibendum nibh. ",
+          page: "samplepage.com",
+          location: "Maracaibo, Venezuela",
+          phone: "+58 1234567",
+          email: "sampleemail@email.com",
+        },
+        coords: {
+          x: 0,
+          y: 0,
+        },
+      },
     };
 
-    this.toggleStateProp = this.toggleStateProp.bind(this);
+    this.toggleStatePropVisibility = this.toggleStatePropVisibility.bind(this);
+
+    this.changeFieldStatePropOnchange =
+      this.changeFieldStatePropOnchange.bind(this);
   }
 
-  handleChange = (e) => {
+  changeFieldStatePropOnchange = (e, prop, field) => {
     e.preventDefault();
-    this.setState({
-      name: e.target.value.toUpperCase(),
-    });
+
+    if (this.state.hasOwnProperty(prop)) {
+      this.setState((prevState) => ({
+        [prop]: {
+          ...prevState[prop],
+          fields: {
+            ...prevState[prop]["fields"],
+            [field]: e.target.value,
+          },
+        },
+      }));
+    } else {
+      try {
+        throw new Error("Invalid state property");
+      } catch (e) {
+        console.error(e.name + ": " + e.message);
+      }
+    }
   };
 
-  toggleStateProp = (e, prop) => {
+  toggleStatePropVisibility = (prop) => {
     if (this.state.hasOwnProperty(prop)) {
-      if (this.state[prop]) {
-        this.setState({ [prop]: false });
+      if (this.state[prop].visibility) {
+        this.setState((prevState) => ({
+          [prop]: {
+            ...prevState[prop],
+            visibility: false,
+          },
+        }));
       } else {
-        this.setState({ [prop]: true });
+        this.setState((prevState) => ({
+          [prop]: {
+            ...prevState[prop],
+            visibility: true,
+          },
+        }));
       }
     } else {
       try {
@@ -39,16 +90,48 @@ class GeneralInfo extends Component {
     }
   };
 
+  changeStatePropCoords = (prop, x, y) => {
+    if (this.state.hasOwnProperty(prop)) {
+      this.setState((prevState) => ({
+        [prop]: {
+          ...prevState[prop],
+          coords: {
+            x,
+            y,
+          },
+        },
+      }));
+    } else {
+      try {
+        throw new Error("Invalid state property");
+      } catch (e) {
+        console.error(e.name + ": " + e.message);
+      }
+    }
+  };
+
   render() {
-    const { nameFormVisibility } = this.state;
+    const { nameForm, contactForm } = this.state;
     return (
       <div className="GeneralInfo ">
         <div className="GeneralInfo__name-and-career">
-          <h4 className="GeneralInfo__name">{this.state.name}</h4>
-          <h6 className="GeneralInfo__career">{this.state.career}</h6>
-          <EditButton buttonHandler={this.toggleStateProp} content="Edit" />
-          {nameFormVisibility && (
-            <Form buttonHandler={this.toggleStateProp("nameFormVisibility")} />
+          <h4 className="GeneralInfo__name">{nameForm.fields.name}</h4>
+          <h6 className="GeneralInfo__career">{nameForm.fields.career}</h6>
+          <EditButton
+            buttonHandler={(e) => {
+              this.changeStatePropCoords("nameForm", e.clientX, e.clientY);
+              this.toggleStatePropVisibility("nameForm");
+            }}
+            content="Edit"
+          />
+          {nameForm.visibility && (
+            <Form
+              id="nameForm"
+              fields={nameForm.fields}
+              coords={nameForm.coords}
+              formHandler={this.changeFieldStatePropOnchange}
+              buttonHandler={() => this.toggleStatePropVisibility("nameForm")}
+            />
           )}
         </div>
         <div className="GeneralInfo__image">
@@ -59,33 +142,50 @@ class GeneralInfo extends Component {
         </div>
         <div className="GeneralInfo__about-container">
           <h5 className="GeneralInfo__about">About me</h5>
-          <p className="GeneralInfo__description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-            faucibus tristique lobortis. Fusce varius dolor nec lectus blandit,
-            porta vestibulum magna porttitor. Suspendisse ut bibendum nibh.
-            Aliquam suscipit, enim ut egestas elementum, ipsum nisl tempor
-            lacus, vel rutrum arcu mi efficitur tortor. Pellentesque fermentum
-            commodo ex a interdum. Fusce at interdum elit, in maximus lacus.
-          </p>
+          <p className="GeneralInfo__description">{contactForm.fields.about}</p>
         </div>
         <div className="GeneralInfo__contact">
-          <div className="GeneralInfo__website contact">
+          <div className="GeneralInfo__website Contact">
             <i className="fas fa-globe GeneralInfo__icon"></i>
-            <p>samplepage.com</p>
+            <p>{contactForm.fields.page}</p>
           </div>
-          <div className="GeneralInfo__location contact">
+          <div className="GeneralInfo__location Contact">
             <i className="fas fa-map-marker-alt GeneralInfo__icon"></i>
-            <p>Maracaibo, Venezuela</p>
+            <p>{contactForm.fields.location}</p>
           </div>
 
-          <div className="GeneralInfo__phone contact">
+          <div className="GeneralInfo__phone Contact">
             <i className="fas fa-phone GeneralInfo__icon"></i>
-            <p>+58 1234567</p>
+            <p>{contactForm.fields.phone}</p>
           </div>
 
-          <div className="GeneralInfo__email contact">
+          <div className="GeneralInfo__email Contact">
             <i className="far fa-envelope GeneralInfo__icon"></i>
-            <p>sampleemail@email.com</p>
+            <p>{contactForm.fields.email}</p>
+          </div>
+          <EditButton
+            buttonHandler={(e) => {
+              this.changeStatePropCoords(
+                "contactForm",
+                e.clientX + 100,
+                e.clientY - 300
+              );
+              this.toggleStatePropVisibility("contactForm");
+            }}
+            content="Edit"
+          />
+          <div style={{ position: "relative" }}>
+            {contactForm.visibility && (
+              <Form
+                id="contactForm"
+                fields={contactForm.fields}
+                coords={contactForm.coords}
+                formHandler={this.changeFieldStatePropOnchange}
+                buttonHandler={(e) => {
+                  this.toggleStatePropVisibility("contactForm");
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

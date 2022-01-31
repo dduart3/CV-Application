@@ -33,6 +33,8 @@
 
 .GeneralInfo__image {
   margin-top: 4vh;
+  width: 100%;
+  height: 100%;
 }
 
 .GeneralInfo__about-container {
@@ -46,18 +48,25 @@
 .GeneralInfo__description {
   font-size: 0.7rem;
   line-height: 1rem;
-  height: 18vh;
+  height: 20vh;
   overflow-x: auto;
 }
 
 .GeneralInfo__contact {
-  margin-top: 4vh;
+  margin-top: 2vh;
   font-size: 1rem;
   display: flex;
   flex-direction: column;
   padding-left: 1.5rem;
+  padding-bottom: 1.5rem;
 }
-.img {
+.GeneralInfo__img {
   max-width: 100%;
   max-height: 100%;
+}
+
+.GeneralInfo__img:hover {
+  opacity: 0.6;
+  cursor: pointer;
+  content: "Change picture";
 }

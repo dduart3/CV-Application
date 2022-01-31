@@ -7,9 +7,14 @@ class EditButton extends Component {
   }
 
   render() {
-    const { content, buttonHandler } = this.props;
+    const { content, buttonHandler, styles } = this.props;
     return (
-      <button onClick={buttonHandler} type="button" className="EditButton">
+      <button
+        style={styles}
+        onClick={buttonHandler}
+        type="button"
+        className="EditButton"
+      >
         {content}
       </button>
     );

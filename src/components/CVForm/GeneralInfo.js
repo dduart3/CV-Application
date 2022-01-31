@@ -6,112 +6,17 @@ import React, { Component } from "react";
 class GeneralInfo extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      nameForm: {
-        visibility: false,
-        fields: {
-          name: "DAVID DUARTE",
-          career: "FRONT END DEVELOPER",
-        },
-        coords: {
-          x: 0,
-          y: 0,
-        },
-      },
-      contactForm: {
-        visibility: false,
-        fields: {
-          about:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus tristique lobortis. Fusce varius dolor nec lectus blandit, porta vestibulum magna porttitor.Suspendisse ut bibendum nibh. ",
-          page: "samplepage.com",
-          location: "Maracaibo, Venezuela",
-          phone: "+58 1234567",
-          email: "sampleemail@email.com",
-        },
-        coords: {
-          x: 0,
-          y: 0,
-        },
-      },
-    };
-
-    this.toggleStatePropVisibility = this.toggleStatePropVisibility.bind(this);
-
-    this.changeFieldStatePropOnchange =
-      this.changeFieldStatePropOnchange.bind(this);
   }
 
-  changeFieldStatePropOnchange = (e, prop, field) => {
-    e.preventDefault();
-
-    if (this.state.hasOwnProperty(prop)) {
-      this.setState((prevState) => ({
-        [prop]: {
-          ...prevState[prop],
-          fields: {
-            ...prevState[prop]["fields"],
-            [field]: e.target.value,
-          },
-        },
-      }));
-    } else {
-      try {
-        throw new Error("Invalid state property");
-      } catch (e) {
-        console.error(e.name + ": " + e.message);
-      }
-    }
-  };
-
-  toggleStatePropVisibility = (prop) => {
-    if (this.state.hasOwnProperty(prop)) {
-      if (this.state[prop].visibility) {
-        this.setState((prevState) => ({
-          [prop]: {
-            ...prevState[prop],
-            visibility: false,
-          },
-        }));
-      } else {
-        this.setState((prevState) => ({
-          [prop]: {
-            ...prevState[prop],
-            visibility: true,
-          },
-        }));
-      }
-    } else {
-      try {
-        throw new Error("Invalid state property");
-      } catch (e) {
-        console.error(e.name + ": " + e.message);
-      }
-    }
-  };
-
-  changeStatePropCoords = (prop, x, y) => {
-    if (this.state.hasOwnProperty(prop)) {
-      this.setState((prevState) => ({
-        [prop]: {
-          ...prevState[prop],
-          coords: {
-            x,
-            y,
-          },
-        },
-      }));
-    } else {
-      try {
-        throw new Error("Invalid state property");
-      } catch (e) {
-        console.error(e.name + ": " + e.message);
-      }
-    }
-  };
-
   render() {
-    const { nameForm, contactForm } = this.state;
+    const {
+      nameForm,
+      contactForm,
+      pictureForm,
+      changeFieldStatePropOnchange,
+      changeStatePropCoords,
+      toggleStatePropVisibility,
+    } = this.props;
     return (
       <div className="GeneralInfo ">
         <div className="GeneralInfo__name-and-career">
@@ -119,8 +24,8 @@ class GeneralInfo extends Component {
           <h6 className="GeneralInfo__career">{nameForm.fields.career}</h6>
           <EditButton
             buttonHandler={(e) => {
-              this.changeStatePropCoords("nameForm", e.clientX, e.clientY);
-              this.toggleStatePropVisibility("nameForm");
+              changeStatePropCoords("nameForm", e.clientX, e.clientY);
+              toggleStatePropVisibility("nameForm");
             }}
             content="Edit"
           />
@@ -129,16 +34,30 @@ class GeneralInfo extends Component {
               id="nameForm"
               fields={nameForm.fields}
               coords={nameForm.coords}
-              formHandler={this.changeFieldStatePropOnchange}
-              buttonHandler={() => this.toggleStatePropVisibility("nameForm")}
+              inputHandler={changeFieldStatePropOnchange}
+              buttonHandler={() => toggleStatePropVisibility("nameForm")}
             />
           )}
         </div>
         <div className="GeneralInfo__image">
           <img
-            className="img"
-            src="https://monstar-lab.com/global/wp-content/uploads/sites/11/2019/04/male-placeholder-image.jpeg"
+            onClick={(e) => {
+              changeStatePropCoords("pictureForm", e.clientX, e.clientY);
+              toggleStatePropVisibility("pictureForm");
+            }}
+            className="GeneralInfo__img"
+            alt="Person picture"
+            src={pictureForm.fields.source}
           ></img>
+          {pictureForm.visibility && (
+            <Form
+              id="pictureForm"
+              fields={pictureForm.fields}
+              coords={pictureForm.coords}
+              inputHandler={changeFieldStatePropOnchange}
+              buttonHandler={() => toggleStatePropVisibility("pictureForm")}
+            ></Form>
+          )}
         </div>
         <div className="GeneralInfo__about-container">
           <h5 className="GeneralInfo__about">About me</h5>
@@ -165,12 +84,12 @@ class GeneralInfo extends Component {
           </div>
           <EditButton
             buttonHandler={(e) => {
-              this.changeStatePropCoords(
+              changeStatePropCoords(
                 "contactForm",
                 e.clientX + 100,
                 e.clientY - 300
               );
-              this.toggleStatePropVisibility("contactForm");
+              toggleStatePropVisibility("contactForm");
             }}
             content="Edit"
           />
@@ -180,9 +99,9 @@ class GeneralInfo extends Component {
                 id="contactForm"
                 fields={contactForm.fields}
                 coords={contactForm.coords}
-                formHandler={this.changeFieldStatePropOnchange}
+                inputHandler={changeFieldStatePropOnchange}
                 buttonHandler={(e) => {
-                  this.toggleStatePropVisibility("contactForm");
+                  toggleStatePropVisibility("contactForm");
                 }}
               />
             )}

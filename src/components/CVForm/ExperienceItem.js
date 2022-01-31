@@ -7,17 +7,36 @@ class ExperienceItem extends Component {
   }
 
   render() {
+    const { dateFrom, dateTo, title, name, location, description, id } =
+      this.props.experienceItem;
+    const { clickHandler } = this.props;
     return (
-      <div className="ExperienceItem">
-        <div>
-          <p className="ExperienceItem__date">AUG 2019 - JULY 2020</p>
-          <p className="ExperienceItem__title">Senior Web Developer</p>
+      <div id={id} onClick={clickHandler} className="ExperienceItem">
+        <div id={id} onClick={clickHandler} className="ExperienceItem__first">
+          <p id={id} onClick={clickHandler} className="ExperienceItem__date">
+            {`${dateFrom.toUpperCase()} - ${dateTo.toUpperCase()}`}
+          </p>
+          <p id={id} onClick={clickHandler} className="ExperienceItem__title">
+            {title}
+          </p>
         </div>
-        <div>
-          <p className="ExperienceItem__name">Google Inc</p>
-          <p className="ExperienceItem__location">Los Angeles, CA</p>
-          <p className="ExperienceItem__description">
-            Aqui me rompi el culo laburando che
+        <div id={id} onClick={clickHandler} className="ExperienceItem__second">
+          <p id={id} onClick={clickHandler} className="ExperienceItem__name">
+            {name}
+          </p>
+          <p
+            id={id}
+            onClick={clickHandler}
+            className="ExperienceItem__location"
+          >
+            {location}
+          </p>
+          <p
+            id={id}
+            onClick={clickHandler}
+            className="ExperienceItem__description"
+          >
+            {description}
           </p>
         </div>
       </div>
